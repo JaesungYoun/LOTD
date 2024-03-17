@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 public class HeartController {
 
-
     @ResponseBody
     @ExceptionHandler(BaseException.class)
     public ResponseEntity<ExceptionResponse> ExceptionHandle(BaseException e) {
