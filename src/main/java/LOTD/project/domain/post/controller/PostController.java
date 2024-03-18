@@ -10,6 +10,9 @@ import LOTD.project.domain.post.service.PostService;
 import LOTD.project.global.exception.BaseException;
 import LOTD.project.global.response.ExceptionResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,15 +27,17 @@ public class PostController implements PostControllerDoc{
 
     @GetMapping("/boards")
     public ResponseEntity<GetBoardResponse> getBoardList(@RequestParam(name = "search_type") String searchType,
-                                                         @RequestParam(name = "text") String text) {
-        return ResponseEntity.ok(postService.getBoardList(searchType,text));
+                                                         @RequestParam(name = "text", required = false) String text,
+                                                         @PageableDefault(page = 0, size = 10, sort = "createDateTime",direction = Sort.Direction.DESC) Pageable pageable) {
+        return ResponseEntity.ok(postService.getBoardList(searchType, text, pageable));
     }
 
     @GetMapping("/posts")
     public ResponseEntity<GetPostResponse> getPost(@RequestParam(name = "post_id") Long postId,
-                                                   @RequestParam(name = "category_id") Long categoryId) {
+                                                   @RequestParam(name = "category_id") Long categoryId,
+                                                   @RequestParam(name = "request_member_id") String requestMemberId) {
 
-        return ResponseEntity.ok(postService.getPost(postId,categoryId));
+        return ResponseEntity.ok(postService.getPost(postId,categoryId,requestMemberId));
     }
 
     @PostMapping("/posts")

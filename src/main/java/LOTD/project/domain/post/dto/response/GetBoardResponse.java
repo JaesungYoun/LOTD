@@ -26,6 +26,8 @@ public class GetBoardResponse {
         private Long hits;
         private String creator;
         private LocalDateTime createdDateTime;
+        private Integer totalPages;
+        private Long totalElements;
 
     }
 
