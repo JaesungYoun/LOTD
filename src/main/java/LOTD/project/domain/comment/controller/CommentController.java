@@ -31,8 +31,9 @@ public class CommentController implements CommentControllerDoc {
 
     @Override
     @DeleteMapping("/comments")
-    public void deleteComment(@RequestParam(name = "comment_id") Long commentId) {
-        commentService.deleteComment(commentId);
+    public void deleteComment(@RequestParam(name = "post_id") Long postId,
+                              @RequestParam(name = "comment_id") Long commentId) {
+        commentService.deleteComment(postId,commentId);
     }
 
     @ResponseBody

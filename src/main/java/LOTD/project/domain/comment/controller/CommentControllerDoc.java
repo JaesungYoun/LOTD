@@ -22,6 +22,7 @@ public interface CommentControllerDoc {
     void updateComment(@RequestBody @Valid UpdateCommentRequest request);
 
     @Operation(summary = "댓글 삭제", description = "댓글을 삭제합니다.")
-    void deleteComment(@RequestParam(name = "comment_id") Long commentId);
+    void deleteComment(@RequestParam(name = "post_id") Long postId,
+                       @RequestParam(name = "comment_id") Long commentId);
 
 }

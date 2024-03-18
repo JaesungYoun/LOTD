@@ -9,6 +9,7 @@ import LOTD.project.domain.member.Member;
 import LOTD.project.domain.member.repository.MemberRepository;
 import LOTD.project.domain.post.Post;
 import LOTD.project.domain.post.repository.PostRepository;
+import LOTD.project.domain.post.repository.PostRepositoryCustom;
 import LOTD.project.global.exception.BaseException;
 import LOTD.project.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
+    private final PostRepositoryCustom postRepositoryCustom;
 
     @Transactional
     public CreateCommentResponse createComment(CreateCommentRequest request) {
@@ -41,6 +43,9 @@ public class CommentService {
 
         // 댓글 저장
         commentRepository.save(comment);
+
+        // 댓글 수 증가
+        postRepositoryCustom.increaseCommentCount(post);
 
         return CreateCommentResponse.builder().commentId(comment.getCommentId()).build();
 
@@ -62,16 +67,19 @@ public class CommentService {
     }
 
     @Transactional
-    public void deleteComment(Long commentId) {
+    public void deleteComment(Long postId, Long commentId) {
+        Post post = postRepository.findByPostId(postId)
+                .orElseThrow(() -> new BaseException(ExceptionCode.DATA_NOT_FOUND));
+
         Comment comment = commentRepository.findByCommentId(commentId)
                 .orElseThrow(() -> new BaseException(ExceptionCode.DATA_NOT_FOUND));
 
-
         // 댓글 삭제
         commentRepository.delete(comment);
+
+        // 댓글 수 감소
+        postRepositoryCustom.reduceCommentCount(post);
+
     }
-
-
-
 
 }
