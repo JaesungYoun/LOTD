@@ -116,7 +116,6 @@ public class JwtService {
             log.info("Expired JWT Token", e);
             redisService.deleteAccessTokenInBlackList(token);
             request.setAttribute("exception", new BaseException(ExceptionCode.TOKEN_EXPIRED));
-            System.out.println("만료에러");
             return false;
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT Token", e);
@@ -211,7 +210,6 @@ public class JwtService {
         Date expiration = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody().getExpiration();
         // 현재 시간
         Long now = new Date().getTime();
-        System.out.println(expiration.getTime() - now);
         return (expiration.getTime() - now);
     }
 
