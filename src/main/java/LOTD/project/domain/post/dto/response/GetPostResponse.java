@@ -25,9 +25,11 @@ public class GetPostResponse {
     private String content;
     private String image;
     private Long commentsCount;
-    private Long likeCount;
+    private Long heartCount;
+    private String heartYn;
     private Long hits;
     private String creator;
     private LocalDateTime createdDate;
     private GetCommentListResponse commentList;
+
 }

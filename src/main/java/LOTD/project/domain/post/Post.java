@@ -40,7 +40,7 @@ public class Post extends BaseEntity {
     private Long commentsCount; // 댓글 수
 
     @Column(nullable = false, name = "LIKE_COUNT")
-    private Long likeCount; // 좋아요 수
+    private Long heartCount; // 좋아요 수
 
     @Column(nullable = false, name = "HITS")
     private Long hits; // 조회 수
