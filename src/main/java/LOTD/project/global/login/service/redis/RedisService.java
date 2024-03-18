@@ -62,7 +62,6 @@ public class RedisService {
 
     public void getRedisblack() {
         SetOperations<String, Object> setOperations = redisTemplate.opsForSet();
-        System.out.println(setOperations.members("accessToken:blackList"));  // 전체 조회
     }
     public void deleteRedisElementsAll(){
         redisTemplate.getConnectionFactory().getConnection().flushAll();
