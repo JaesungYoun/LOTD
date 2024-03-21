@@ -65,6 +65,10 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 }
 
+jar {
+	enabled = false
+}
+
 ///// Querydsl 빌드 옵션 (옵셔널)
 def querydslDir = "$buildDir/generated/querydsl"
 
