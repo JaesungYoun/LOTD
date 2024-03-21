@@ -39,9 +39,10 @@ public class PostService {
     private final PostRepositoryCustom postRepositoryCustom;
 
     @Transactional(readOnly = true)
-    public GetBoardResponse getBoardList(String searchType, String text, Pageable pageable) {
-        Page<Post> postList;
-
+    public GetBoardResponse getBoardList(String searchCondition, String text, Pageable pageable) {
+        Page<GetBoardResponse.InnerGetBoard> postList = postRepositoryCustom
+                .getBoardList(searchCondition, text, pageable);
+        /**
         if (StringUtil.isEmpty(searchType)) {
             postList = postRepository.findAll(pageable);
         }
@@ -57,20 +58,21 @@ public class PostService {
             }
 
         }
+         */
 
         List<GetBoardResponse.InnerGetBoard> response = new ArrayList<>();
 
         response = postList.stream()
-                .map(data -> GetBoardResponse.InnerGetBoard.builder()
-                        .postId(data.getPostId())
-                        .categoryId(data.getCategory().getCategoryId())
-                        .title(data.getTitle())
-                        .commentsCount(data.getCommentsCount())
-                        .hits(data.getHits())
+                .map(page -> GetBoardResponse.InnerGetBoard.builder()
+                        .postId(page.getPostId())
+                        .categoryId(page.getCategoryId())
+                        .title(page.getTitle())
+                        .commentsCount(page.getCommentsCount())
+                        .hits(page.getHits())
                         .totalPages(postList.getTotalPages())
                         .totalElements(postList.getTotalElements())
-                        .creator(data.getMember().getNickname())
-                        .createdDateTime(data.getCreateDateTime())
+                        .creator(page.getCreator())
+                        .createdDateTime(page.getCreatedDateTime())
                         .build())
                 .collect(Collectors.toList());
 
