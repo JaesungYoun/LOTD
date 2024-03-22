@@ -46,6 +46,8 @@ public interface ProfileControllerDoc {
     @Operation(summary = "좋아요 글 목록 조회", description = "좋아요를 한 글 목록을 조회합니다.")
     ResponseEntity<GetMyHeartPostListResponse> getMyHeartPostList(@RequestParam(name = "member_id") String memberId,
                                                                   @PageableDefault(page = 0, size = 10, sort = "createDateTime",direction = Sort.Direction.DESC) Pageable pageable);
-    
+
+
+
 
 }

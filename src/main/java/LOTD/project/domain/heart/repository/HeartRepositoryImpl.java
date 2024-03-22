@@ -36,7 +36,7 @@ public class HeartRepositoryImpl implements HeartRepositoryCustom{
                         post.category.categoryId.as("categoryId"),
                         post.postId.as("postId"),
                         post.title.as("title"),
-                        post.commentsCount.as("commentsCount"),
+                        post.commentCount.as("commentCount"),
                         post.hits.as("hits"),
                         post.member.nickname.as("creator"),
                         post.createDateTime.as("createDateTime")

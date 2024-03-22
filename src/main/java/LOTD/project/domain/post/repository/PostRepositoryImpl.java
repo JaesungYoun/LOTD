@@ -43,7 +43,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
                     post.category.categoryId.as("categoryId"),
                     post.postId.as("postId"),
                     post.title.as("title"),
-                    post.commentsCount.as("commentsCount"),
+                    post.commentCount.as("commentCount"),
                     post.hits.as("hits"),
                     post.member.nickname.as("creator"),
                     post.createDateTime.as("createDateTime")
@@ -75,7 +75,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
     @Override
     public void increaseCommentCount(Post commentPost) {
         queryFactory.update(post)
-                .set(post.commentsCount, post.commentsCount.add(1))
+                .set(post.commentCount, post.commentCount.add(1))
                 .where(post.eq(commentPost))
                 .execute();
     }
@@ -87,7 +87,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
     @Override
     public void reduceCommentCount(Post commentDeletePost) {
         queryFactory.update(post)
-                .set(post.commentsCount, post.commentsCount.subtract(1))
+                .set(post.commentCount, post.commentCount.subtract(1))
                 .where(post.eq(commentDeletePost))
                 .execute();
     }

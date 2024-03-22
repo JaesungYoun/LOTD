@@ -24,7 +24,7 @@ public class GetPostResponse {
     private String title;
     private String content;
     private String image;
-    private Long commentsCount;
+    private Long commentCount;
     private Long heartCount;
     private String heartYn;
     private Long hits;

@@ -19,7 +19,7 @@ public class GetMyCommentsPostListResponse {
         private Long categoryId;
         private Long postId;
         private String title;
-        private Long commentsCount;
+        private Long commentCount;
         private Long hits;
         private String creator;
         private LocalDateTime createDateTime;

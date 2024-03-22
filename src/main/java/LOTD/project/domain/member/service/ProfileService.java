@@ -136,7 +136,7 @@ public class ProfileService {
                         .postId(page.getPostId())
                         .categoryId(page.getCategoryId())
                         .title(page.getTitle())
-                        .commentsCount(page.getCommentsCount())
+                        .commentCount(page.getCommentCount())
                         .hits(page.getHits())
                         .totalPages(heartPostList.getTotalPages())
                         .totalElements(heartPostList.getTotalElements())
