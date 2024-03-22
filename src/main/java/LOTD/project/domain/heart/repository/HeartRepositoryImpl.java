@@ -42,12 +42,10 @@ public class HeartRepositoryImpl implements HeartRepositoryCustom{
                         post.createDateTime.as("createDateTime")
                 ))
                 .from(post)
-                .innerJoin(post.heart,heart)
-                .innerJoin(post.member,member)
-
-                // 동적쿼리를 생성하기 위한 조건문
-                .where(isEqualMemberId(memberId)
-                )
+                .leftJoin(post.heart,heart)
+                .innerJoin(post.member, member)
+                .where(heart.isNotNull(),
+                        isEqualMemberId(memberId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(myHeartListOrder(pageable).stream().toArray(OrderSpecifier[]::new))
@@ -55,10 +53,10 @@ public class HeartRepositoryImpl implements HeartRepositoryCustom{
 
         JPAQuery<Long> countQuery = queryFactory
                 .select(post.count())
-                .from(post)
-                .innerJoin(post.heart,heart)
-                .innerJoin(post.member,member)
-                .where(isEqualMemberId(memberId)
+                .leftJoin(post.heart,heart)
+                .innerJoin(post.member, member)
+                .where(heart.isNotNull(),
+                        isEqualMemberId(memberId)
                 );
 
         return PageableExecutionUtils.getPage(fetch, pageable, countQuery::fetchOne);
