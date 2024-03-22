@@ -13,5 +13,4 @@ public interface HeartRepository extends JpaRepository<Heart, Long> {
 
     Optional<Heart> findByMemberAndPost(Member member, Post post);
 
-
 }

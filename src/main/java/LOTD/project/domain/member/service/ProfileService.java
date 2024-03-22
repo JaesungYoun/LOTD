@@ -1,18 +1,25 @@
 package LOTD.project.domain.member.service;
 
+import LOTD.project.domain.heart.repository.HeartRepositoryCustom;
 import LOTD.project.domain.member.Member;
 import LOTD.project.domain.member.dto.request.MemberUpdateEmailRequest;
 import LOTD.project.domain.member.dto.request.MemberUpdateNicknameRequest;
+import LOTD.project.domain.member.dto.response.GetMyHeartPostListResponse;
 import LOTD.project.domain.member.dto.response.MyPageResponse;
 import LOTD.project.domain.member.repository.MemberRepository;
 import LOTD.project.global.exception.BaseException;
 import LOTD.project.global.exception.ExceptionCode;
 import LOTD.project.global.login.service.redis.RedisService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +29,7 @@ public class ProfileService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final RedisService redisService;
+    private final HeartRepositoryCustom heartRepositoryCustom;
     /**
      * 회원정보 수정 ( 닉네임 ,나이 등 )
      * @param
@@ -116,5 +124,32 @@ public class ProfileService {
                     .build();
         }
     }
+
+    public GetMyHeartPostListResponse getMyHeartPostList(String memberId, Pageable pageable) {
+        Page<GetMyHeartPostListResponse.InnerGetMyHeartPost> heartPostList = heartRepositoryCustom
+                .getMyHeartPostList(memberId, pageable);
+
+        List<GetMyHeartPostListResponse.InnerGetMyHeartPost> response = new ArrayList<>();
+
+        response = heartPostList.stream()
+                .map(page -> GetMyHeartPostListResponse.InnerGetMyHeartPost.builder()
+                        .postId(page.getPostId())
+                        .categoryId(page.getCategoryId())
+                        .title(page.getTitle())
+                        .commentsCount(page.getCommentsCount())
+                        .hits(page.getHits())
+                        .totalPages(heartPostList.getTotalPages())
+                        .totalElements(heartPostList.getTotalElements())
+                        .creator(page.getCreator())
+                        .createDateTime(page.getCreateDateTime())
+                        .build())
+                .collect(Collectors.toList());
+
+        return GetMyHeartPostListResponse.builder().heartPostList(response).build();
+
+    }
+
+
+
 
 }

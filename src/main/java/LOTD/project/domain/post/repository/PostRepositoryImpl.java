@@ -37,10 +37,11 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
      * @return
      */
     @Override
-    public Page<GetBoardResponse.InnerGetBoard> getBoardList(String searchCondition, String text, Pageable pageable) {
+    public Page<GetBoardResponse.InnerGetBoard> getBoardList(Long categoryId, String searchCondition, String text, Pageable pageable) {
 
         List<GetBoardResponse.InnerGetBoard> fetch = queryFactory.select(Projections.bean(GetBoardResponse.InnerGetBoard.class,
-                    post.category.as("categoryId"),
+                    post.category.categoryId.as("categoryId"),
+                    post.postId.as("postId"),
                     post.title.as("title"),
                     post.commentsCount.as("commentsCount"),
                     post.hits.as("hits"),
@@ -60,7 +61,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
         JPAQuery<Long> countQuery = queryFactory
                 .select(post.count())
                 .from(post)
-                .where(searchCondition(searchCondition,text)
+                .where(isEqualCategoryId(categoryId),
+                        searchCondition(searchCondition,text)
                 );
 
         return PageableExecutionUtils.getPage(fetch, pageable, countQuery::fetchOne);
@@ -126,6 +128,15 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
                 .execute();
     }
 
+
+    private BooleanExpression isEqualCategoryId(Long categoryId) {
+        if (categoryId == null) {
+            return null;
+        }
+
+        return post.category.categoryId.eq(categoryId);
+    }
+
     private BooleanExpression searchCondition(String searchCondition, String text) {
         if (searchCondition == null || searchCondition.isBlank()) {
             return null;
@@ -158,7 +169,6 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
 
             orders.add(new OrderSpecifier(direction,pathBuilder.get(order.getProperty())));
         }
-        System.out.println(orders);
         return orders;
     }
 }

@@ -4,8 +4,12 @@ import LOTD.project.domain.member.dto.request.ChangePasswordRequest;
 import LOTD.project.domain.member.dto.request.DeleteMemberRequest;
 import LOTD.project.domain.member.dto.request.MemberUpdateEmailRequest;
 import LOTD.project.domain.member.dto.request.MemberUpdateNicknameRequest;
+import LOTD.project.domain.member.dto.response.GetMyHeartPostListResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,6 +42,10 @@ public interface ProfileControllerDoc {
 
     @Operation(summary = "회원정보 조회", description = "회원정보를 조회를 진행합니다.")
     ResponseEntity<?> MyPage(@RequestParam(name = "member_id") String memberId);
+
+    @Operation(summary = "좋아요 글 목록 조회", description = "좋아요를 한 글 목록을 조회합니다.")
+    ResponseEntity<GetMyHeartPostListResponse> getMyHeartPostList(@RequestParam(name = "member_id") String memberId,
+                                                                  @PageableDefault(page = 0, size = 10, sort = "createDateTime",direction = Sort.Direction.DESC) Pageable pageable);
     
 
 }

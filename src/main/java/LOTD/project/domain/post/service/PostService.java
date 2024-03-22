@@ -39,26 +39,10 @@ public class PostService {
     private final PostRepositoryCustom postRepositoryCustom;
 
     @Transactional(readOnly = true)
-    public GetBoardResponse getBoardList(String searchCondition, String text, Pageable pageable) {
+    public GetBoardResponse getBoardList(Long categoryId, String searchCondition, String text, Pageable pageable) {
         Page<GetBoardResponse.InnerGetBoard> postList = postRepositoryCustom
-                .getBoardList(searchCondition, text, pageable);
-        /**
-        if (StringUtil.isEmpty(searchType)) {
-            postList = postRepository.findAll(pageable);
-        }
-        else {
-            if (searchType.equals("creator")) {
-                postList = postRepository.findAllByCreatorContains(text, pageable);
-            }
-            else if (searchType.equals("content")){
-                postList = postRepository.findAllByContentContains(text, pageable);
-            }
-            else {
-                postList = postRepository.findAllByTitleContains(text, pageable);
-            }
+                .getBoardList(categoryId, searchCondition, text, pageable);
 
-        }
-         */
 
         List<GetBoardResponse.InnerGetBoard> response = new ArrayList<>();
 
@@ -72,7 +56,7 @@ public class PostService {
                         .totalPages(postList.getTotalPages())
                         .totalElements(postList.getTotalElements())
                         .creator(page.getCreator())
-                        .createdDateTime(page.getCreatedDateTime())
+                        .createDateTime(page.getCreateDateTime())
                         .build())
                 .collect(Collectors.toList());
 

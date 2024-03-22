@@ -25,7 +25,7 @@ public class GetBoardResponse {
         private Long commentsCount;
         private Long hits;
         private String creator;
-        private LocalDateTime createdDateTime;
+        private LocalDateTime createDateTime;
         private Integer totalPages;
         private Long totalElements;
 
