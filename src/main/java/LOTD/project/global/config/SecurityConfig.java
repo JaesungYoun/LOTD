@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -40,8 +41,12 @@ public class SecurityConfig {
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
     private static final String[] PERMIT_URL = {
-            "/signup", "/login", "/logout", "/memberid/check", "/nicknames/check", "/oauth/**",
+            "/signup", "/login", "/memberid/check", "/nicknames/check", "/oauth/**",
             "/swagger-ui/**","/v3/api-docs/**"
+    };
+
+    private static final String[] GetMethodPermitURL = {
+            "/categories/**", "/posts/**", "/boards/**"
     };
 
     @Bean
@@ -68,6 +73,7 @@ public class SecurityConfig {
 
                 .antMatchers("/members/**").hasRole("MEMBER")
                 .antMatchers(PERMIT_URL).permitAll() // 회원가입, 로그인 폼 접근 가능
+                .antMatchers(HttpMethod.GET, GetMethodPermitURL).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtService),

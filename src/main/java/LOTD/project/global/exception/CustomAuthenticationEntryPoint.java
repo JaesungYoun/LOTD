@@ -32,43 +32,46 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         response.setContentType("application/json;charset=UTF-8");
         Map<String, String> data = new HashMap<>();
 */
+        if (baseException != null) {
+            // 토큰 만료의 경우 다른 응답
+            if (baseException.getExceptionCode().getErrorCode().equals("TOKEN_01")) {
+                setResponse(response, ExceptionCode.TOKEN_EXPIRED);
+                return;
+            }
 
-        // 토큰 만료의 경우 다른 응답
-        if (baseException.getExceptionCode().getErrorCode().equals("TOKEN_01")) {
-            setResponse(response,ExceptionCode.TOKEN_EXPIRED);
-            return;
+            // 유효한 토큰이 아닌 경우 다른 응답
+            if (baseException.getExceptionCode().getErrorCode().equals("TOKEN_02")) {
+                setResponse(response, ExceptionCode.NOT_VALID_TOKEN);
+                return;
+            }
+
+            if (baseException.getExceptionCode().getErrorCode().equals("TOKEN_03")) {
+                setResponse(response, ExceptionCode.UNSUPPORTED_TOKEN);
+                return;
+            }
+
+            if (baseException.getExceptionCode().getErrorCode().equals("TOKEN_04")) {
+                setResponse(response, ExceptionCode.NOT_ACCESS_TOKEN_TYPE);
+                return;
+            }
+
+            if (baseException.getExceptionCode().getErrorCode().equals("TOKEN_05")) {
+                setResponse(response, ExceptionCode.BLACKLISTED_ACCESS_TOKEN);
+                return;
+            }
+
+            if (baseException.getExceptionCode().getErrorCode().equals("TOKEN_06")) {
+                setResponse(response, ExceptionCode.ALL_TOKEN_EXPIRED);
+                return;
+            }
+
+            if (baseException.getExceptionCode().getErrorCode().equals("MEMBER_04")) {
+                setResponse(response, ExceptionCode.NOT_EXIST_MEMBER);
+                return;
+            }
         }
 
-        // 유효한 토큰이 아닌 경우 다른 응답
-        if (baseException.getExceptionCode().getErrorCode().equals("TOKEN_02")) {
-            setResponse(response,ExceptionCode.NOT_VALID_TOKEN);
-            return;
-        }
-
-        if (baseException.getExceptionCode().getErrorCode().equals("TOKEN_03")) {
-            setResponse(response,ExceptionCode.UNSUPPORTED_TOKEN);
-            return;
-        }
-
-        if (baseException.getExceptionCode().getErrorCode().equals("TOKEN_04")) {
-            setResponse(response,ExceptionCode.NOT_ACCESS_TOKEN_TYPE);
-            return;
-        }
-
-        if (baseException.getExceptionCode().getErrorCode().equals("TOKEN_05")) {
-            setResponse(response,ExceptionCode.BLACKLISTED_ACCESS_TOKEN);
-            return;
-        }
-
-        if (baseException.getExceptionCode().getErrorCode().equals("TOKEN_06")) {
-            setResponse(response,ExceptionCode.ALL_TOKEN_EXPIRED);
-            return;
-        }
-
-        if (baseException.getExceptionCode().getErrorCode().equals("MEMBER_04")) {
-            setResponse(response,ExceptionCode.NOT_EXIST_MEMBER);
-            return;
-        }
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 
     }
 
