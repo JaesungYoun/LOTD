@@ -19,7 +19,8 @@ public interface PostControllerDoc {
 
 
     @Operation(summary = "게시글 목록 조회" , description = "게시글 목록을 조회합니다.")
-    ResponseEntity<GetBoardResponse> getBoardList(@RequestParam(name = "search_type") String searchType,
+    ResponseEntity<GetBoardResponse> getBoardList(@RequestParam(name = "category_id", required = false) Long categoryId,
+                                                  @RequestParam(name = "search_condition",required = false) String searchType,
                                                   @RequestParam(name = "text", required = false) String text,
                                                   @PageableDefault(page = 0, size = 10, sort = "createDateTime") Pageable pageable);
 

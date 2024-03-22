@@ -2,6 +2,7 @@ package LOTD.project.domain.member;
 
 
 
+import LOTD.project.domain.heart.Heart;
 import LOTD.project.domain.member.oauth2.SocialType;
 import LOTD.project.global.audit.BaseEntity;
 import lombok.*;
@@ -44,6 +45,7 @@ public class Member extends BaseEntity implements UserDetails {
     @Column(name = "ROLE")
     @Enumerated(EnumType.STRING)
     private Role role;
+
 
     // 패스워드 암호화 메소드
     public void passwordEncode(PasswordEncoder passwordEncoder) {

@@ -26,16 +26,17 @@ public class PostController implements PostControllerDoc{
 
 
     @GetMapping("/boards")
-    public ResponseEntity<GetBoardResponse> getBoardList(@RequestParam(name = "search_type") String searchType,
+    public ResponseEntity<GetBoardResponse> getBoardList(@RequestParam(name = "category_id", required = false) Long categoryId,
+                                                         @RequestParam(name = "search_condition", required = false) String searchCondition,
                                                          @RequestParam(name = "text", required = false) String text,
                                                          @PageableDefault(page = 0, size = 10, sort = "createDateTime",direction = Sort.Direction.DESC) Pageable pageable) {
-        return ResponseEntity.ok(postService.getBoardList(searchType, text, pageable));
+        return ResponseEntity.ok(postService.getBoardList(categoryId, searchCondition, text, pageable));
     }
 
     @GetMapping("/posts")
     public ResponseEntity<GetPostResponse> getPost(@RequestParam(name = "post_id") Long postId,
                                                    @RequestParam(name = "category_id") Long categoryId,
-                                                   @RequestParam(name = "request_member_id") String requestMemberId) {
+                                                   @RequestParam(name = "request_member_id", required = false) String requestMemberId) {
 
         return ResponseEntity.ok(postService.getPost(postId,categoryId,requestMemberId));
     }

@@ -1,6 +1,7 @@
 package LOTD.project.domain.post;
 import LOTD.project.domain.category.Category;
 import LOTD.project.domain.comment.Comment;
+import LOTD.project.domain.heart.Heart;
 import LOTD.project.domain.member.Member;
 import LOTD.project.global.audit.BaseEntity;
 import lombok.*;
@@ -55,6 +56,9 @@ public class Post extends BaseEntity {
 
     @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Comment> comment;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    private List<Heart> heart;
 
     public void updatePost(String title, String content, String image) {
         this.title = title;

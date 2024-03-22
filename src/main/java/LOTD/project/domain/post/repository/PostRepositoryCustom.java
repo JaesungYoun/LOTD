@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 public interface PostRepositoryCustom {
 
 
-    Page<GetBoardResponse.InnerGetBoard> getBoardList(String searchType, String text, Pageable pageable);
+    Page<GetBoardResponse.InnerGetBoard> getBoardList(Long categoryId, String searchCondition, String text, Pageable pageable);
 
 
     void increaseCommentCount(Post commentPost);
