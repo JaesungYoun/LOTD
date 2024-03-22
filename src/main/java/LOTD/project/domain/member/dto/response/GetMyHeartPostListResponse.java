@@ -27,7 +27,6 @@ public class GetMyHeartPostListResponse {
         private String title;
         private Long commentCount;
         private Long hits;
-        private String creator;
         private LocalDateTime createDateTime;
         private Integer totalPages;
         private Long totalElements;

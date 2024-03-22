@@ -1,5 +1,7 @@
 package LOTD.project.domain.post.repository;
 
+import LOTD.project.domain.member.dto.response.GetMyCommentPostListResponse;
+import LOTD.project.domain.member.dto.response.GetMyHeartPostListResponse;
 import LOTD.project.domain.post.Post;
 import LOTD.project.domain.post.dto.response.GetBoardResponse;
 import com.querydsl.core.types.Order;
@@ -10,7 +12,6 @@ import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,6 +21,9 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import static LOTD.project.domain.comment.QComment.comment;
+import static LOTD.project.domain.heart.QHeart.heart;
+import static LOTD.project.domain.member.QMember.member;
 import static LOTD.project.domain.post.QPost.post;
 
 @Repository
@@ -66,6 +70,76 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
                 );
 
         return PageableExecutionUtils.getPage(fetch, pageable, countQuery::fetchOne);
+    }
+
+    @Override
+    public Page<GetMyHeartPostListResponse.InnerGetMyHeartPost> getMyHeartPostList(String memberId, Pageable pageable) {
+        List<GetMyHeartPostListResponse.InnerGetMyHeartPost> fetch = queryFactory.select(Projections.bean(GetMyHeartPostListResponse.InnerGetMyHeartPost.class,
+                        post.category.categoryId.as("categoryId"),
+                        post.postId.as("postId"),
+                        post.title.as("title"),
+                        post.commentCount.as("commentCount"),
+                        post.hits.as("hits"),
+                        post.createDateTime.as("createDateTime")
+                ))
+                .from(post)
+                .leftJoin(post.heart,heart)
+                .innerJoin(post.member, member)
+                .where(heart.isNotNull(),
+                        isEqualHeartMemberId(memberId))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(boardOrder(pageable).stream().toArray(OrderSpecifier[]::new))
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory
+                .select(post.count())
+                .from(post)
+                .leftJoin(post.heart,heart)
+                .innerJoin(post.member, member)
+                .where(heart.isNotNull(),
+                        isEqualHeartMemberId(memberId)
+                );
+
+        return PageableExecutionUtils.getPage(fetch, pageable, countQuery::fetchOne);
+
+
+    }
+
+    @Override
+    public Page<GetMyCommentPostListResponse.InnerGetMyCommentPost> getMyCommentPostList(String memberId, Pageable pageable) {
+        List<GetMyCommentPostListResponse.InnerGetMyCommentPost> fetch = queryFactory
+                .select(Projections.bean(GetMyCommentPostListResponse.InnerGetMyCommentPost.class,
+                        post.category.categoryId.as("categoryId"),
+                        post.postId.as("postId"),
+                        post.title.as("postTitle"),
+                        comment.content.as("commentContent"),
+                        post.commentCount.as("commentCount"),
+                        post.hits.as("postHits"),
+                        post.createDateTime.as("createDateTime")
+
+                ))
+                .from(post)
+                .leftJoin(post.comment,comment)
+                .innerJoin(post.member, member)
+                .where(comment.isNotNull(),
+                        isEqualCommentMemberId(memberId))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(boardOrder(pageable).stream().toArray(OrderSpecifier[]::new))
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory
+                .select(post.count())
+                .from(post)
+                .leftJoin(post.comment,comment)
+                .innerJoin(post.member, member)
+                .where(comment.isNotNull(),
+                        isEqualCommentMemberId(memberId)
+                );
+
+        return PageableExecutionUtils.getPage(fetch, pageable, countQuery::fetchOne);
+
     }
 
     /**
@@ -159,6 +233,24 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
             return null;
     }
 
+    private BooleanExpression isEqualHeartMemberId(String memberId) {
+        if (memberId == null || memberId.isBlank()) {
+            return null;
+        }
+
+        return heart.member.memberId.eq(memberId);
+
+    }
+    private BooleanExpression isEqualCommentMemberId(String memberId) {
+        if (memberId == null || memberId.isBlank()) {
+            return null;
+        }
+
+        return comment.member.memberId.eq(memberId);
+
+    }
+
+
     private List<OrderSpecifier> boardOrder(Pageable pageable) {
 
         List<OrderSpecifier> orders = new ArrayList<>();
@@ -171,4 +263,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
         }
         return orders;
     }
+
+
+
 }

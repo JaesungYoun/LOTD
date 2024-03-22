@@ -1,39 +1,41 @@
 package LOTD.project.domain.member.service;
 
-import LOTD.project.domain.heart.repository.HeartRepositoryCustom;
 import LOTD.project.domain.member.Member;
 import LOTD.project.domain.member.dto.request.MemberUpdateEmailRequest;
 import LOTD.project.domain.member.dto.request.MemberUpdateNicknameRequest;
+import LOTD.project.domain.member.dto.response.GetMyCommentPostListResponse;
 import LOTD.project.domain.member.dto.response.GetMyHeartPostListResponse;
 import LOTD.project.domain.member.dto.response.MyPageResponse;
 import LOTD.project.domain.member.repository.MemberRepository;
+import LOTD.project.domain.post.repository.PostRepositoryCustom;
 import LOTD.project.global.exception.BaseException;
 import LOTD.project.global.exception.ExceptionCode;
 import LOTD.project.global.login.service.redis.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class ProfileService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final RedisService redisService;
-    private final HeartRepositoryCustom heartRepositoryCustom;
+    private final PostRepositoryCustom postRepositoryCustom;
     /**
      * 회원정보 수정 ( 닉네임 ,나이 등 )
      * @param
      */
+    @Transactional(readOnly = true)
     public void updateMemberNickname(MemberUpdateNicknameRequest memberUpdateNicknameRequest, String memberId){
         Member member = memberRepository.findByMemberId(memberId).orElse(null);
 
@@ -42,7 +44,7 @@ public class ProfileService {
         }
 
     }
-
+    @Transactional
     public void updateMemberEmail(MemberUpdateEmailRequest memberUpdateEmailRequest, String memberId){
         Member member = memberRepository.findByMemberId(memberId).orElse(null);
 
@@ -57,6 +59,7 @@ public class ProfileService {
      * @param asIsPassword
      * @param toBePassword
      */
+    @Transactional
     public void changePassword(String asIsPassword, String toBePassword, String memberId) {
         Member member = memberRepository.findByMemberId(memberId).orElse(null);
 
@@ -72,6 +75,7 @@ public class ProfileService {
      * 회원 탈퇴
      */
 
+    @Transactional
     public void deleteMember(String checkPassword, String memberId){
         Member member = memberRepository.findByMemberId(memberId).orElse(null);
 
@@ -91,6 +95,7 @@ public class ProfileService {
 
     }
 
+    @Transactional
     public void deleteSocialMember(String memberId){
         Member member = memberRepository.findByMemberId(memberId).orElse(null);
 
@@ -109,6 +114,7 @@ public class ProfileService {
     }
 
 
+    @Transactional(readOnly = true)
     public MyPageResponse myPage(String memberId){
         Member member = memberRepository.findByMemberId(memberId).orElse(null);
 
@@ -125,28 +131,53 @@ public class ProfileService {
         }
     }
 
+    @Transactional(readOnly = true)
     public GetMyHeartPostListResponse getMyHeartPostList(String memberId, Pageable pageable) {
-        Page<GetMyHeartPostListResponse.InnerGetMyHeartPost> heartPostList = heartRepositoryCustom
+        Page<GetMyHeartPostListResponse.InnerGetMyHeartPost> heartPost = postRepositoryCustom
                 .getMyHeartPostList(memberId, pageable);
 
-        List<GetMyHeartPostListResponse.InnerGetMyHeartPost> response = new ArrayList<>();
+        List<GetMyHeartPostListResponse.InnerGetMyHeartPost> response = new ArrayList<>(); // null 방지
 
-        response = heartPostList.stream()
-                .map(page -> GetMyHeartPostListResponse.InnerGetMyHeartPost.builder()
-                        .postId(page.getPostId())
-                        .categoryId(page.getCategoryId())
-                        .title(page.getTitle())
-                        .commentCount(page.getCommentCount())
-                        .hits(page.getHits())
-                        .totalPages(heartPostList.getTotalPages())
-                        .totalElements(heartPostList.getTotalElements())
-                        .creator(page.getCreator())
-                        .createDateTime(page.getCreateDateTime())
+        response = heartPost.stream()
+                .map(data -> GetMyHeartPostListResponse.InnerGetMyHeartPost.builder()
+                        .postId(data.getPostId())
+                        .categoryId(data.getCategoryId())
+                        .title(data.getTitle())
+                        .commentCount(data.getCommentCount())
+                        .hits(data.getHits())
+                        .createDateTime(data.getCreateDateTime())
+                        .totalPages(heartPost.getTotalPages())
+                        .totalElements(heartPost.getTotalElements())
                         .build())
                 .collect(Collectors.toList());
 
         return GetMyHeartPostListResponse.builder().heartPostList(response).build();
 
+    }
+
+    @Transactional(readOnly = true)
+    public GetMyCommentPostListResponse getMyCommentPostList(String memberId, Pageable pageable) {
+        Page<GetMyCommentPostListResponse.InnerGetMyCommentPost> commentPost = postRepositoryCustom
+                .getMyCommentPostList(memberId,pageable);
+
+        List<GetMyCommentPostListResponse.InnerGetMyCommentPost> response = new ArrayList<>(); // null 방지
+
+        response = commentPost.stream()
+                .map(data -> GetMyCommentPostListResponse.InnerGetMyCommentPost.builder()
+                        .postId(data.getPostId())
+                        .categoryId(data.getCategoryId())
+                        .postTitle(data.getPostTitle())
+                        .commentContent(data.getCommentContent())
+                        .commentCount(data.getCommentCount())
+                        .postHits(data.getPostHits())
+                        .createDateTime(data.getCreateDateTime())
+                        .totalPages(commentPost.getTotalPages())
+                        .totalElements(commentPost.getTotalElements())
+                        .build())
+                .collect(Collectors.toList());
+
+
+        return GetMyCommentPostListResponse.builder().commentsPostList(response).build();
     }
 
 

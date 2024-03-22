@@ -1,6 +1,7 @@
 package LOTD.project.domain.member.controller;
 
 import LOTD.project.domain.member.dto.request.*;
+import LOTD.project.domain.member.dto.response.GetMyCommentPostListResponse;
 import LOTD.project.domain.member.dto.response.GetMyHeartPostListResponse;
 import LOTD.project.domain.member.dto.response.MyPageResponse;
 import LOTD.project.domain.member.service.ProfileService;
@@ -107,11 +108,21 @@ public class ProfileController implements ProfileControllerDoc {
     }
 
     @Override
-    @GetMapping("/members/hearts")
+    @GetMapping("/members/my/hearts")
     public ResponseEntity<GetMyHeartPostListResponse> getMyHeartPostList(@RequestParam(name = "member_id") String memberId,
                                                                          @PageableDefault(page = 0, size = 10, sort = "createDateTime",direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(profileService.getMyHeartPostList(memberId,pageable));
     }
+    @Override
+    @GetMapping("/members/my/comments")
+    public ResponseEntity<GetMyCommentPostListResponse> getMyCommentPostList(@RequestParam(name = "member_id") String memberId,
+                                                                      @PageableDefault(page = 0, size = 10, sort = "createDateTime",direction = Sort.Direction.DESC) Pageable pageable) {
+        return ResponseEntity.ok(profileService.getMyCommentPostList(memberId,pageable));
+    }
+
+
+
+
 
     @ExceptionHandler(BaseException.class)
     public ResponseEntity<ExceptionResponse> ExceptionHandle(BaseException e) {

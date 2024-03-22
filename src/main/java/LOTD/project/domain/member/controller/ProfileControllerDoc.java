@@ -4,7 +4,9 @@ import LOTD.project.domain.member.dto.request.ChangePasswordRequest;
 import LOTD.project.domain.member.dto.request.DeleteMemberRequest;
 import LOTD.project.domain.member.dto.request.MemberUpdateEmailRequest;
 import LOTD.project.domain.member.dto.request.MemberUpdateNicknameRequest;
+import LOTD.project.domain.member.dto.response.GetMyCommentPostListResponse;
 import LOTD.project.domain.member.dto.response.GetMyHeartPostListResponse;
+import LOTD.project.domain.member.dto.response.GetMyPostListResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
@@ -46,6 +48,16 @@ public interface ProfileControllerDoc {
     @Operation(summary = "좋아요 글 목록 조회", description = "좋아요를 한 글 목록을 조회합니다.")
     ResponseEntity<GetMyHeartPostListResponse> getMyHeartPostList(@RequestParam(name = "member_id") String memberId,
                                                                   @PageableDefault(page = 0, size = 10, sort = "createDateTime",direction = Sort.Direction.DESC) Pageable pageable);
+
+
+    @Operation(summary = "내 댓글 목록 조회", description = "내 댓글 목록을 조회합니다.")
+    ResponseEntity<GetMyCommentPostListResponse> getMyCommentPostList(@RequestParam(name = "member_id") String memberId,
+                                                                      @PageableDefault(page = 0, size = 10, sort = "createDateTime",direction = Sort.Direction.DESC) Pageable pageable);
+
+
+    @Operation(summary = "내가 작성한 글 목록 조회", description = "내가 작성한 글 목록을 조회합니다.")
+    ResponseEntity<GetMyPostListResponse> getMyPostList(@RequestParam(name = "member_id") String memberId,
+                                                        @PageableDefault(page = 0, size = 10, sort = "createDateTime",direction = Sort.Direction.DESC) Pageable pageable);
 
 
 

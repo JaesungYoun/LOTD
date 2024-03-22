@@ -8,20 +8,20 @@ import java.util.List;
 
 @Data
 @Builder
-public class GetMyCommentsPostListResponse {
+public class GetMyCommentPostListResponse {
 
-    List<InnerGetMyCommentsPost> commentsPostList;
+    List<InnerGetMyCommentPost> commentsPostList;
 
     @Data
     @Builder
-    public static class InnerGetMyCommentsPost {
+    public static class InnerGetMyCommentPost {
 
         private Long categoryId;
         private Long postId;
-        private String title;
+        private String postTitle;
+        private String commentContent;
         private Long commentCount;
-        private Long hits;
-        private String creator;
+        private Long postHits;
         private LocalDateTime createDateTime;
         private Integer totalPages;
         private Long totalElements;
