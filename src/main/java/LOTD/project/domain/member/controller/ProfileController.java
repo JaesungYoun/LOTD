@@ -3,6 +3,7 @@ package LOTD.project.domain.member.controller;
 import LOTD.project.domain.member.dto.request.*;
 import LOTD.project.domain.member.dto.response.GetMyCommentPostListResponse;
 import LOTD.project.domain.member.dto.response.GetMyHeartPostListResponse;
+import LOTD.project.domain.member.dto.response.GetMyPostListResponse;
 import LOTD.project.domain.member.dto.response.MyPageResponse;
 import LOTD.project.domain.member.service.ProfileService;
 import LOTD.project.domain.post.controller.PostControllerDoc;
@@ -120,8 +121,11 @@ public class ProfileController implements ProfileControllerDoc {
         return ResponseEntity.ok(profileService.getMyCommentPostList(memberId,pageable));
     }
 
-
-
+    @Override
+    @GetMapping("/members/my/posts")
+    public ResponseEntity<GetMyPostListResponse> getMyPostList(String memberId, Pageable pageable) {
+        return null;
+    }
 
 
     @ExceptionHandler(BaseException.class)
