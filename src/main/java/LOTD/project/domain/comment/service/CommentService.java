@@ -29,7 +29,7 @@ public class CommentService {
     public CreateCommentResponse createComment(CreateCommentRequest request) {
 
         Member member = memberRepository.findByMemberId(request.getMemberId())
-                .orElseThrow(() -> new BaseException(ExceptionCode.DATA_NOT_FOUND));
+                .orElseThrow(() -> new BaseException(ExceptionCode.NOT_EXIST_MEMBER));
 
         Post post = postRepository.findByPostId(request.getPostId())
                 .orElseThrow(() -> new BaseException(ExceptionCode.DATA_NOT_FOUND));

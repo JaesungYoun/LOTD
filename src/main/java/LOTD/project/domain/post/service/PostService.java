@@ -74,52 +74,47 @@ public class PostService {
             throw new BaseException(ExceptionCode.WRONG_REQUEST_DATA);
         }
 
-
-        Member requestMember = memberRepository.findByMemberId(requestMemberId)
-                .orElseThrow(()-> new BaseException(ExceptionCode.DATA_NOT_FOUND));
-
-        // 좋아요 여부 체크
-        Heart heart = heartRepository.findByMemberAndPost(requestMember,post).orElse(null);
         String heartYn = "N";
+        if (requestMemberId != null) {
+            Member requestMember = memberRepository.findByMemberId(requestMemberId)
+                    .orElseThrow(() -> new BaseException(ExceptionCode.NOT_EXIST_MEMBER));
 
-        // 좋아요가 존재하면 좋아요 여부 Y 설정
-        if (heart != null) {
-            heartYn = "Y";
+            // 좋아요 여부 체크
+            Heart heart = heartRepository.findByMemberAndPost(requestMember, post).orElse(null);
+            // 좋아요가 존재하면 좋아요 여부 Y 설정
+            if (heart != null) {
+                heartYn = "Y";
+            }
         }
 
-        // 조회 수 증가
+            // 조회 수 증가
         postRepositoryCustom.increaseHitsCount(post);
 
         return GetPostResponse.builder()
-                .categoryId(post.getCategory().getCategoryId())
-                .postId(post.getPostId())
-                .memberId(post.getMember().getMemberId())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .image(post.getImage())
-                .commentCount(post.getCommentCount())
-                .heartCount(post.getHeartCount())
-                .heartYn(heartYn)
-                .hits(post.getHits())
-                .creator(post.getMember().getNickname())
-                .createdDate(post.getCreateDateTime())
-                .commentList(GetCommentListResponse.builder().commentList(post.getComment().stream()
-                                .map(data -> GetCommentListResponse.InnerComment.builder()
-                                        .memberId(data.getMember().getMemberId())
-                                        .creator(data.getMember().getNickname())
-                                        .commentId(data.getCommentId())
-                                        .parentCommentId(data.getParentCommentId())
-                                        .content(data.getContent())
-                                        .createdDate(data.getCreateDateTime())
-                                        .build())
-                                .collect(Collectors.toList()))
-                        .build())
-                .build();
-
-
-        //.commentList(post.getComment().stream().map(GetCommentListResponse::new).collect(Collectors.toList()))
-        //.build();
-
+                    .categoryId(post.getCategory().getCategoryId())
+                    .postId(post.getPostId())
+                    .memberId(post.getMember().getMemberId())
+                    .title(post.getTitle())
+                    .content(post.getContent())
+                    .image(post.getImage())
+                    .commentCount(post.getCommentCount())
+                    .heartCount(post.getHeartCount())
+                    .heartYn(heartYn)
+                    .hits(post.getHits())
+                    .creator(post.getMember().getNickname())
+                    .createdDate(post.getCreateDateTime())
+                    .commentList(GetCommentListResponse.builder().commentList(post.getComment().stream()
+                                    .map(data -> GetCommentListResponse.InnerComment.builder()
+                                            .memberId(data.getMember().getMemberId())
+                                            .creator(data.getMember().getNickname())
+                                            .commentId(data.getCommentId())
+                                            .parentCommentId(data.getParentCommentId())
+                                            .content(data.getContent())
+                                            .createdDate(data.getCreateDateTime())
+                                            .build())
+                                    .collect(Collectors.toList()))
+                            .build())
+                    .build();
     }
 
     @Transactional
@@ -127,7 +122,7 @@ public class PostService {
 
 
         Member member = memberRepository.findByMemberId(request.getMemberId())
-                .orElseThrow(() -> new BaseException(ExceptionCode.DATA_NOT_FOUND));
+                .orElseThrow(() -> new BaseException(ExceptionCode.NOT_EXIST_MEMBER));
 
         Category category = categoryRepository.findByCategoryId(request.getCategoryId())
                 .orElseThrow(() -> new BaseException(ExceptionCode.DATA_NOT_FOUND));

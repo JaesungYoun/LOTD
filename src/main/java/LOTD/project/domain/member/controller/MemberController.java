@@ -94,7 +94,7 @@ public class MemberController implements MemberControllerDoc{
 
         // 유효성 검사를 통과하지 못한 경우 바로 에러 메시지 반환
         if (bindingResult.hasErrors()) {
-            return baseResponse.fail(HttpStatus.BAD_REQUEST, "아이디 또는 비밀번호가 형식이 맞지 않습니다.");
+            return baseResponse.fail(HttpStatus.BAD_REQUEST, "아이디 또는 비밀번호를 올바르게 입력해주세요.");
         }
 
         Member member = memberService.findMember(memberLoginRequest.getMemberId());
