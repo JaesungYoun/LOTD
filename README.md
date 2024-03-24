@@ -63,10 +63,12 @@
 ![SpringBoot](https://img.shields.io/badge/springboot-%236DB33F.svg?style=for-the-badge&logo=springboot&logoColor=white)
 ![JPA](https://img.shields.io/badge/JPA-%236DB33F.svg?style=for-the-badge&logo=JPA&logoColor=white)
 ![QueryDsl](https://img.shields.io/badge/QueryDsl-2185D0?style=for-the-badge&logo=QueryDsl&logoColor=white)
+![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)
 ![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
 ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
 ![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white)
 ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
 </br>
 
@@ -100,6 +102,7 @@
 |          | API Docs            | OpenAPI(Swagger)        | 3.0.1       |
 |          | API Docs            | Postman                 | \-          |
 | Server   | Server              | AWS EC2                 | -           |
+| Server   | Deploy              | Docker                  | -           |
 </br>
 
 ## 🗂️ 시스템 아키텍처
@@ -175,13 +178,181 @@
 ![Search_List](https://github.com/Team-LOTD/LOTD/assets/93576045/bda6e80c-86fa-455d-950d-e6b8ad097162)
 </br>
 
+
+
+## 📁 Back-End 소스 코드 폴더 구조
+```bash
+📦src
+ ┣ 📂main
+ ┃ ┣ 📂java
+ ┃ ┃ ┗ 📂LOTD
+ ┃ ┃ ┃ ┗ 📂project
+ ┃ ┃ ┃ ┃ ┣ 📂domain
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂category
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂controller
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜CategoryController.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜CategoryControllerDoc.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂dto
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂request
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜CreateCategoryRequest.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜UpdateCategoryRequest.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂response
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜CreateCategoryResponse.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜GetCategoryListResponse.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂repository
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜CategoryRepository.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂service
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜CategoryService.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Category.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂comment
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂controller
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜CommentController.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜CommentControllerDoc.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂dto
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂request
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜CreateCommentRequest.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜UpdateCommentRequest.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂response
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜CreateCommentResponse.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜GetCommentListResponse.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂repository
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜CommentRepository.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂service
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜CommentService.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Comment.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂heart
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂controller
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜HeartController.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜HeartControllerDoc.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂dto
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂request
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜HeartClickRequest.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂repository
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜HeartRepository.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂service
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜HeartService.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Heart.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂member
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂controller
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜MemberController.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜MemberControllerDoc.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜OAuthController.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜OAuthControllerDoc.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ProfileController.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ProfileControllerDoc.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂dto
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂request
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ChangePasswordRequest.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜DeleteMemberRequest.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜MemberLoginRequest.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜MemberSignUpRequest.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜MemberUpdateEmailRequest.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜MemberUpdateNicknameRequest.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂response
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜LoginResponse.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜MemberSignUpResponse.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜MyPageResponse.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂oauth2
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂dto
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂request
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜GoogleSignUpRequest.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜KakaoSignUpRequest.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜NaverSignUpRequest.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂response
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜GoogleInfo.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜GoogleToken.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜KakaoInfo.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜KakaoToken.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜NaverInfo.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜NaverToken.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂service
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜GoogleService.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜KakaoService.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜NaverService.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜SocialType.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂repository
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜MemberRepository.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂service
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜MemberService.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ProfileService.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Member.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Role.java
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂post
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂controller
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜PostController.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜PostControllerDoc.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂dto
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂request
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜CreatePostRequest.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜DeletePostRequest.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜UpdatePostRequest.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂response
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜CreatePostResponse.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜GetBoardResponse.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜GetPostResponse.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂repository
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜PostRepository.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜PostRepositoryCustom.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜PostRepositoryImpl.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂service
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜PostService.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Post.java
+ ┃ ┃ ┃ ┃ ┣ 📂global
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂audit
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜BaseEntity.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜BaseTimeEntity.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜JpaAuditConfig.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂config
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜QuerydslConfig.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜SecurityConfig.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜SwaggerConfig.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜WebConfig.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂exception
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜BaseException.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜CustomAccessDeniedHandler.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜CustomAuthenticationEntryPoint.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ExceptionCode.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂jwt
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜JwtAuthenticationFilter.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜JwtService.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜TokenType.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂login
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂service
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂redis
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜RedisConfig.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜RedisService.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜CustomUserDetailsService.java
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂response
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜BaseResponse.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ExceptionResponse.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Status.java
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂util
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜SecurityUtil.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜StringUtil.java
+ ┃ ┃ ┃ ┃ ┗ 📜ProjectApplication.java
+ ┃ ┗ 📂resources
+ ┃ ┃ ┣ 📂static
+ ┃ ┃ ┣ 📂templates
+ ┃ ┃ ┣ 📜application-dev.yml
+ ┃ ┃ ┣ 📜application-local.yml
+ ┃ ┃ ┗ 📜application.yml
+ ┗ 📂test
+ ┃ ┗ 📂java
+ ┃ ┃ ┗ 📂LOTD
+ ┃ ┃ ┃ ┗ 📂project
+ ┃ ┃ ┃ ┃ ┗ 📜ProjectApplicationTests.java
+```
+
 ## 👥 협업 관리
 </br>
 
 ## 📆 프로젝트 기간
-### 23.12.27 ~ 진행 중
+### 23.12.27 ~ 24.03.10
 - 기획 및 설계 : 23.12.27 ~ 24.01.20
-- 프로젝트 구현 : 24.01.15 ~ 진행 중
+- 프로젝트 구현 : 24.01.15 ~ 24.03.10
 </br>
 
 ## 📋 프로젝트 관련 문서
+LOTD 기능명세서 - [LOTD 기능명세서 바로가기](https://oxidized-steam-8cd.notion.site/d6add040a9184e3184c47f1f357c2e65)
+</br>
+LOTD 회의록     - [LOTD 회의록 바로가기](https://oxidized-steam-8cd.notion.site/d7701dda420f4d0cb6eb17fb03e6caff)
