@@ -124,7 +124,7 @@ public class ProfileController implements ProfileControllerDoc {
     @Override
     @GetMapping("/members/my/posts")
     public ResponseEntity<GetMyPostListResponse> getMyPostList(String memberId, Pageable pageable) {
-        return null;
+        return ResponseEntity.ok(profileService.getMyPostList(memberId,pageable));
     }
 
 

@@ -5,6 +5,7 @@ import LOTD.project.domain.member.dto.request.MemberUpdateEmailRequest;
 import LOTD.project.domain.member.dto.request.MemberUpdateNicknameRequest;
 import LOTD.project.domain.member.dto.response.GetMyCommentPostListResponse;
 import LOTD.project.domain.member.dto.response.GetMyHeartPostListResponse;
+import LOTD.project.domain.member.dto.response.GetMyPostListResponse;
 import LOTD.project.domain.member.dto.response.MyPageResponse;
 import LOTD.project.domain.member.repository.MemberRepository;
 import LOTD.project.domain.post.repository.PostRepositoryCustom;
@@ -179,6 +180,31 @@ public class ProfileService {
 
         return GetMyCommentPostListResponse.builder().commentsPostList(response).build();
     }
+
+    public GetMyPostListResponse getMyPostList(String memberId, Pageable pageable) {
+        Page<GetMyPostListResponse.InnerGetMyPost> myPostList = postRepositoryCustom
+                .getMyPostList(memberId,pageable);
+
+        List<GetMyPostListResponse.InnerGetMyPost> response = new ArrayList<>();
+
+        response = myPostList.stream()
+                .map(data -> GetMyPostListResponse.InnerGetMyPost.builder()
+                        .postId(data.getPostId())
+                        .categoryId(data.getCategoryId())
+                        .postTitle(data.getPostTitle())
+                        .commentCount(data.getCommentCount())
+                        .hits(data.getHits())
+                        .createDateTime(data.getCreateDateTime())
+                        .totalPages(myPostList.getTotalPages())
+                        .totalElements(myPostList.getTotalElements())
+                        .build())
+                .collect(Collectors.toList());
+
+
+        return GetMyPostListResponse.builder().postList(response).build();
+
+    }
+
 
 
 
