@@ -38,13 +38,16 @@ public class Post extends BaseEntity {
     private String image; // 대표 이미지
 
     @Column(nullable = false, name = "COMMENT_COUNT")
-    private Long commentCount; // 댓글 수
+    @Builder.Default
+    private Long commentCount = 0L; // 댓글 수
 
     @Column(nullable = false, name = "HEART_COUNT")
-    private Long heartCount; // 좋아요 수
+    @Builder.Default
+    private Long heartCount = 0L; // 좋아요 수
 
     @Column(nullable = false, name = "HIT_COUNT")
-    private Long hits; // 조회 수
+    @Builder.Default
+    private Long hits = 0L; // 조회 수
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CATEGORY_ID")
