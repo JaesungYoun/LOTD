@@ -2,6 +2,7 @@ package LOTD.project.domain.post.repository;
 
 import LOTD.project.domain.member.dto.response.GetMyCommentPostListResponse;
 import LOTD.project.domain.member.dto.response.GetMyHeartPostListResponse;
+import LOTD.project.domain.member.dto.response.GetMyPostListResponse;
 import LOTD.project.domain.post.Post;
 import LOTD.project.domain.post.dto.response.GetBoardResponse;
 import com.querydsl.core.types.Order;
@@ -142,6 +143,35 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
 
     }
 
+    @Override
+    public Page<GetMyPostListResponse.InnerGetMyPost> getMyPostList(String memberId, Pageable pageable) {
+        List<GetMyPostListResponse.InnerGetMyPost> fetch = queryFactory
+                .select(Projections.bean(GetMyPostListResponse.InnerGetMyPost.class,
+                        post.category.categoryId.as("categoryId"),
+                        post.postId.as("postId"),
+                        post.title.as("postTitle"),
+                        post.commentCount.as("commentCount"),
+                        post.hits.as("hits"),
+                        post.createDateTime.as("createDateTime")
+                ))
+                .from(post)
+                .where(isEqualPostMemberId(memberId) // member의 정보는 필요 없기 때문에 join쓰지 않고 where절만으로 가능
+                        )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(boardOrder(pageable).stream().toArray(OrderSpecifier[]::new))
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory
+                .select(post.count())
+                .from(post)
+                .where(isEqualPostMemberId(memberId)
+                );
+
+        return PageableExecutionUtils.getPage(fetch, pageable, countQuery::fetchOne);
+
+    }
+
     /**
      * 댓글 수 증가
      * @param commentPost
@@ -247,6 +277,16 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
         }
 
         return comment.member.memberId.eq(memberId);
+
+    }
+
+
+    private BooleanExpression isEqualPostMemberId(String memberId) {
+        if (memberId == null || memberId.isBlank()) {
+            return null;
+        }
+
+        return post.member.memberId.eq(memberId);
 
     }
 
