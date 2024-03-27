@@ -149,7 +149,10 @@ public class PostService {
     public void updatePost(Long postId, UpdatePostRequest request) {
         Post post = postRepository.findByPostId(postId).orElseThrow(()-> new BaseException(ExceptionCode.DATA_NOT_FOUND));
 
-        post.updatePost(request.getTitle(), request.getContent(), request.getImage());
+        Category category = categoryRepository.findByCategoryId(request.getCategoryId())
+                .orElseThrow(() -> new BaseException(ExceptionCode.DATA_NOT_FOUND));
+
+        post.updatePost(category, request.getTitle(), request.getContent(), request.getImage());
         postRepository.save(post);
     }
 

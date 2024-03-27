@@ -63,7 +63,8 @@ public class Post extends BaseEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Heart> heart;
 
-    public void updatePost(String title, String content, String image) {
+    public void updatePost(Category category, String title, String content, String image) {
+        this.category = category;
         this.title = title;
         this.content = content;
         this.image = image;

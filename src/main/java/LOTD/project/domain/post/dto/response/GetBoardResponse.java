@@ -1,7 +1,6 @@
 package LOTD.project.domain.post.dto.response;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,13 +9,17 @@ import java.util.List;
 /**
  * 게시글 조회 목록 응답
  */
-@Getter
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class GetBoardResponse {
 
     List<InnerGetBoard> getBoardListList = new ArrayList<>();
-    @Getter
+    @Data
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class InnerGetBoard {
 
         private Long categoryId;
