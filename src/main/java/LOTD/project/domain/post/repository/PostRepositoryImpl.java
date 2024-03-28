@@ -114,7 +114,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
                 .select(Projections.bean(GetMyCommentPostListResponse.InnerGetMyCommentPost.class,
                         post.category.categoryId.as("categoryId"),
                         post.postId.as("postId"),
-                        post.title.as("postTitle"),
+                        post.title.as("title"),
                         comment.content.as("commentContent"),
                         post.commentCount.as("commentCount"),
                         post.hits.as("postHits"),
@@ -150,7 +150,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
                 .select(Projections.bean(GetMyPostListResponse.InnerGetMyPost.class,
                         post.category.categoryId.as("categoryId"),
                         post.postId.as("postId"),
-                        post.title.as("postTitle"),
+                        post.title.as("title"),
                         post.commentCount.as("commentCount"),
                         post.hits.as("hits"),
                         post.createDateTime.as("createDateTime")

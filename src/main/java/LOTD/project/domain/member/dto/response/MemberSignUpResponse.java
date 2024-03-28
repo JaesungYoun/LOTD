@@ -2,12 +2,16 @@ package LOTD.project.domain.member.dto.response;
 
 import LOTD.project.domain.member.Member;
 import LOTD.project.global.response.BaseResponse;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class MemberSignUpResponse extends BaseResponse {
 
     private String memberId;
