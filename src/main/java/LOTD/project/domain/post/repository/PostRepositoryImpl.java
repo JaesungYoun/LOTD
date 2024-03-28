@@ -56,7 +56,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
                 .from(post)
 
                 // 동적쿼리를 생성하기 위한 조건문
-                .where(searchCondition(searchCondition,text)
+                .where(searchCondition(searchCondition,text),
+                        isEqualCategoryId(categoryId)
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
