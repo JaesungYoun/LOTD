@@ -12,6 +12,7 @@ import LOTD.project.domain.post.repository.PostRepository;
 import LOTD.project.domain.post.repository.PostRepositoryCustom;
 import LOTD.project.global.exception.BaseException;
 import LOTD.project.global.exception.ExceptionCode;
+import LOTD.project.global.status.DeleteStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,10 +35,13 @@ public class CommentService {
         Post post = postRepository.findByPostId(request.getPostId())
                 .orElseThrow(() -> new BaseException(ExceptionCode.DATA_NOT_FOUND));
 
+        Comment parentComment = commentRepository.findByCommentId(request.getParentCommentId())
+                .orElse(null);
+
         Comment comment = Comment.builder()
                 .member(member)
                 .post(post)
-                .parentCommentId(request.getParentCommentId())
+                .parentComment(parentComment)
                 .content(request.getContent())
                 .build();
 
@@ -74,12 +78,27 @@ public class CommentService {
         Comment comment = commentRepository.findByCommentId(commentId)
                 .orElseThrow(() -> new BaseException(ExceptionCode.DATA_NOT_FOUND));
 
-        // 댓글 삭제
-        commentRepository.delete(comment);
+
+        if (comment.getChildren().size() != 0) {
+            comment.updateDeleteStatus(DeleteStatus.Y);
+        }
+        else {
+            commentRepository.delete(getDeletableParentComment(comment));
+            // 댓글 삭제
+            commentRepository.delete(comment);
+        }
 
         // 댓글 수 감소
         postRepositoryCustom.reduceCommentCount(post);
 
+    }
+
+    private Comment getDeletableParentComment(Comment comment) {
+        Comment parentComment = comment.getParentComment();
+        if (parentComment != null && parentComment.getChildren().size() == 1 && parentComment.getIsDeleted() == DeleteStatus.Y)
+            return parentComment;
+
+        return comment;
     }
 
 }

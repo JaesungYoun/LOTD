@@ -24,6 +24,7 @@ public class GetCommentListResponse {
         private Long commentId;
         private Long parentCommentId;
         private String content;
+        private String deleteStatus;
         private LocalDateTime createdDate;
     }
 

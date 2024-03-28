@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -108,7 +109,8 @@ public class PostService {
                                             .memberId(data.getMember().getMemberId())
                                             .creator(data.getMember().getNickname())
                                             .commentId(data.getCommentId())
-                                            .parentCommentId(data.getParentCommentId())
+                                            .parentCommentId(data.getParentComment() != null ? data.getParentComment().getCommentId() : null)
+                                            .deleteStatus(data.getIsDeleted() != null ? data.getIsDeleted().getValue() : null)
                                             .content(data.getContent())
                                             .createdDate(data.getCreateDateTime())
                                             .build())
