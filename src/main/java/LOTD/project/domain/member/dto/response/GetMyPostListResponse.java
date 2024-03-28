@@ -24,7 +24,7 @@ public class GetMyPostListResponse {
 
         private Long categoryId;
         private Long postId;
-        private String postTitle;
+        private String title;
         private Long commentCount;
         private Long hits;
         private LocalDateTime createDateTime;
