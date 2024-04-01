@@ -175,16 +175,13 @@ public class GoogleService {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseBody);
 
-
-        String accessToken = jsonNode.get("access_token").asText();
-        String refreshToken = jsonNode.get("refresh_token").asText();
-        String tokenType = jsonNode.get("token_type").asText();
-        int expiresIn = jsonNode.get("expires_in").asInt();
-        String scope = jsonNode.get("scope").asText();
+        String accessToken = jsonNode != null ? jsonNode.get("access_token").asText() : null;;
+        String tokenType = jsonNode != null ? jsonNode.get("token_type").asText() : null;
+        Integer expiresIn = jsonNode != null ? jsonNode.get("expires_in").asInt() : null;
+        String scope = jsonNode != null ? jsonNode.get("scope").asText() : null;
 
         GoogleToken googleToken = GoogleToken.builder()
                 .accessToken(accessToken)
-                .refreshToken(refreshToken)
                 .tokenType(tokenType)
                 .expiresIn(expiresIn)
                 .scope(scope)

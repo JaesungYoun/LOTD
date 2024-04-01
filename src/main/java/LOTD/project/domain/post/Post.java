@@ -27,7 +27,7 @@ public class Post extends BaseEntity {
     private Long postId; // 게시글 아이디
 
 
-    @Column(nullable = false, name = "CONTENTS")
+    @Column(nullable = false, name = "TITLE")
     @NotBlank
     private String title; // 제목
 

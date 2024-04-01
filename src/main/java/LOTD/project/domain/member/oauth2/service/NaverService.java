@@ -180,10 +180,10 @@ public class NaverService {
         JsonNode jsonNode = objectMapper.readTree(responseBody);
 
 
-        String accessToken = jsonNode.get("access_token").asText();
-        String refreshToken = jsonNode.get("refresh_token").asText();
-        String tokenType = jsonNode.get("token_type").asText();
-        int expiresIn = jsonNode.get("expires_in").asInt();
+        String accessToken = jsonNode != null ? jsonNode.get("access_token").asText() : null;
+        String refreshToken = jsonNode != null ? jsonNode.get("refresh_token").asText() : null;
+        String tokenType = jsonNode != null ? jsonNode.get("token_type").asText() : null;
+        Integer expiresIn = jsonNode != null ? jsonNode.get("expires_in").asInt() : null;
         //String error = jsonNode.get("error").asText();
         //String error_description = jsonNode.get("error_description").asText();
 

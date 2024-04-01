@@ -179,12 +179,12 @@ public class KakaoService {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseBody);
 
-        String tokenType = jsonNode.get("token_type").asText();
-        String accessToken = jsonNode.get("access_token").asText();
-        int expiresIn = jsonNode.get("expires_in").asInt();
-        String refreshToken = jsonNode.get("refresh_token").asText();
-        int refreshTokenExpiresIn = jsonNode.get("refresh_token_expires_in").asInt();
-        String scope = jsonNode.get("scope").asText();
+        String tokenType = jsonNode != null ? jsonNode.get("token_type").asText() : null;
+        String accessToken = jsonNode != null ? jsonNode.get("access_token").asText() : null;
+        Integer expiresIn = jsonNode != null ? jsonNode.get("expires_in").asInt() : null;
+        String refreshToken = jsonNode != null ? jsonNode.get("refresh_token").asText() : null;
+        Integer refreshTokenExpiresIn = jsonNode != null ? jsonNode.get("refresh_token_expires_in").asInt() : null;
+        String scope = jsonNode != null ? jsonNode.get("scope").asText() : null;
 
         KakaoToken kakaoToken = KakaoToken.builder()
                 .tokenType(tokenType)
